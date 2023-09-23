@@ -1,0 +1,19 @@
+.card-container {
+    background-color: #eee;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 16px;
+}
+
+.image-container {
+    width: 100%;
+}
+
+.image-container img {
+    width: 100%;
+}
+
+.meta-container {
+    display: flex;
+    gap: 8px;
+}
