@@ -1,8 +1,18 @@
-const City = (props) => {
-    return (
-        // eslint-disable-next-line react/prop-types
-        <h3>{props.cityValue}</h3>
-    )
-}
+import PropTypes from "prop-types";
+
+const City = ({ cityValue, imageUrl }) => {
+  return (
+    <div>
+      <img width={400} src={imageUrl} alt="" />
+      <h3>{cityValue}</h3>
+    </div>
+  );
+};
+
+City.propTypes = {
+  countryValue: PropTypes.string,
+  cityValue: PropTypes.string,
+  imageUrl: PropTypes.string,
+};
 
 export default City;
