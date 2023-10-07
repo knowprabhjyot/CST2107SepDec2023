@@ -1,0 +1,24 @@
+.tableContainer {
+    padding: 16px;
+    background-color: brown;
+    height: 100%;
+    width: 100%;
+}
+
+.tableHeader {
+    background-color: black;
+    color: white;
+    padding: 16px;
+}
+
+.tableData {
+    padding: 16px;
+}
+
+.tableRow:nth-child(even) {
+    background-color: bisque;
+}
+
+.tableRow:nth-child(odd) {
+    color: white;
+}

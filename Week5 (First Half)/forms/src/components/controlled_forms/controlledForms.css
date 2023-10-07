@@ -1,0 +1,26 @@
+:root {
+    --spacingUnit: 16px;
+}
+
+form {
+    background-color: bisque;
+    padding: 20px;
+}
+
+.form-control {
+    padding: var(--spacingUnit);
+}
+
+.form-control label {
+    font-weight: bold;
+    padding-right: var(--spacingUnit);
+}
+
+.form-control input {
+    padding: 8px;
+    border: none;
+}
+
+button {
+    margin-top: var(--spacingUnit);
+}
