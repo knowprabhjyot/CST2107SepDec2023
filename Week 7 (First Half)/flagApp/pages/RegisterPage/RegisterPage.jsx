@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
-import { Box, Button, Paper } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { Box, Button, Paper, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const RegisterPage = (props) => {
   const [registerData, setRegisterData] = useState({
@@ -18,6 +18,9 @@ const RegisterPage = (props) => {
   return (
     <Paper elevation={4}>
       <form onSubmit={registerUser}>
+        <Typography variant="h4" fontWeight="bold" padding="8px">
+          Register Here!
+        </Typography>
         <Box
           height="450px"
           display="flex"
