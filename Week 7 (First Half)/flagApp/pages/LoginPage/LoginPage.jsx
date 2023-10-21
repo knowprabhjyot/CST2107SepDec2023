@@ -1,24 +1,56 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../src/firebaseConfig";
+import { getAuthErrorMessages } from "../../utils";
 
 const LoginPage = (props) => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const loginUser = (event) => {
+  const loginUser = async (event) => {
     event.preventDefault();
-    console.log(loginData, "loginData");
+    setIsLoading(true);
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        loginData.email,
+        loginData.password
+      );
+      if (user) {
+        setTimeout(() => {
+          setIsLoading(false);
+          localStorage.setItem("current-user", JSON.stringify(user));
+          alert("User Succesfully Logged In");
+          navigate("/home");
+        }, 2000);
+      }
+    } catch (error) {
+      const errorMessage = getAuthErrorMessages(error.code);
+      alert(errorMessage);
+      setIsLoading(false);
+    }
   };
 
   return (
     <Paper elevation={4}>
       <form onSubmit={loginUser}>
-        <Typography variant='h4' fontWeight='bold' padding="8px">Login Here!</Typography>
+        <Typography variant="h4" fontWeight="bold" padding="8px">
+          Login Here!
+        </Typography>
         <Box
           height="450px"
           display="flex"
@@ -58,7 +90,13 @@ const LoginPage = (props) => {
               minLength: 6,
             }}
           />
-          <Button color="secondary" type="submit" variant="contained">
+          <Button
+            disabled={isLoading}
+            color="secondary"
+            type="submit"
+            variant="contained"
+          >
+            {isLoading && <CircularProgress color="secondary" size={20} />}
             Login
           </Button>
 
