@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import TravelCard from "../../src/components/TravelCard/TravelCard";
-import { Grid } from "@mui/material";
+import { Box, CircularProgress, Grid, LinearProgress } from "@mui/material";
 
 const URL = "https://restcountries.com/v3.1/all";
 
 const HomePage = (props) => {
   const [flagsData, setFlagsData] = useState([]);
+
+  const cssConfig = {
+    height: "100%",
+    width: "auto",
+    imageHeight: 140,
+  };
 
   //   const getFlagsApi = async () => {
   //     try {
@@ -31,17 +37,29 @@ const HomePage = (props) => {
     flagsAPIWithAxios();
   }, []);
 
+  // Since we are waiting for the api data, we want to show spinner in meanwhile
+  if (flagsData.length === 0) {
+    return (
+      <Box
+        display="flex"
+        // sx={{ width: "100vw" }}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress size={40}  />
+      </Box>
+    );
+  }
+
   return (
     <Grid container spacing={4}>
-      {
-        flagsData.map((data, index) => {
-          return (
-            <Grid key={index} item xs={12} md={4} lg={4}>
-              <TravelCard data={data} />
-            </Grid>
-          );
-        })
-      }
+      {flagsData.map((data, index) => {
+        return (
+          <Grid key={index} item xs={12} md={4} lg={4}>
+            <TravelCard cssConfig={cssConfig} showViewMore={true} data={data} />
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };
