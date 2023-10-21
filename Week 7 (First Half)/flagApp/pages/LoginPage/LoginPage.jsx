@@ -46,7 +46,7 @@ const LoginPage = (props) => {
   };
 
   return (
-    <Paper elevation={4}>
+    <Paper style={{ width: 600, textAlign: 'center', margin: 'auto'}} elevation={4}>
       <form onSubmit={loginUser}>
         <Typography variant="h4" fontWeight="bold" padding="8px">
           Login Here!
@@ -62,7 +62,7 @@ const LoginPage = (props) => {
             <img width={200} src="/logo.png" alt="" />
           </Box>
           <TextField
-            style={{ width: 400 }}
+          fullWidth
             id="outlined-basic"
             type="email"
             label="Email"
@@ -75,7 +75,6 @@ const LoginPage = (props) => {
             required
           />
           <TextField
-            style={{ width: 400 }}
             id="outlined-basic"
             type="password"
             label="Password"

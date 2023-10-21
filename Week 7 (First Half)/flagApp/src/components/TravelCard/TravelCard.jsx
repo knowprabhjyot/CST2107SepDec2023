@@ -22,7 +22,10 @@ const TravelCard = ({ data, showViewMore, cssConfig }) => {
   return (
     <Card style={{
         height: cssConfig.height,
-        width: cssConfig.width
+        width: cssConfig.width,
+        display: cssConfig.containerFlex.display,
+        flexDirection: cssConfig.containerFlex.flexDirection,
+        alignItems: cssConfig.containerFlex.alignItems,
     }}>
       <CardMedia sx={{ height: cssConfig.imageHeight, width: cssConfig.imageWidth }} image={data.flags.png} />
       <CardContent>

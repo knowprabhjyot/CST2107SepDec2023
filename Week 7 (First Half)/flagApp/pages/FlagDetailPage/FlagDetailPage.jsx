@@ -17,6 +17,12 @@ const FlagDetailPage = (props) => {
     height: "100%",
     imageWidth: "800px",
     imageHeight: "400px",
+    containerFlex: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column'
+    }
   };
 
   useEffect(() => {

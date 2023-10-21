@@ -13,6 +13,12 @@ const HomePage = (props) => {
     height: "100%",
     width: "auto",
     imageHeight: 140,
+    containerFlex: {
+      display: 'block',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column'
+    }
   };
 
   //   const getFlagsApi = async () => {
