@@ -1,5 +1,5 @@
 import './App.css'
-
+import Button from '@mui/material/Button';
 
 // React Material Design for using existing components
 // Revising React Router Dom
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      
+      <Button color="error" variant="contained">Contained</Button>
     </>
   )
 }
