@@ -1,18 +1,43 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, CircularProgress, Paper, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../src/firebaseConfig";
+import { getAuthErrorMessages } from "../../utils";
 
 const RegisterPage = (props) => {
+
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
     email: "",
     password: "",
   });
 
-  const registerUser = (event) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const registerUser = async (event) => {
     event.preventDefault();
-    console.log(registerData, "registerData");
+    setIsLoading(true);
+    try {
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerData.email,
+        registerData.password
+      );
+      if (user) {
+        setTimeout(() => {
+          setIsLoading(false);
+          alert("User Succesfully registered");
+          navigate("/");
+        }, 2000);
+      }
+    } catch (error) {
+      const errorMessage = getAuthErrorMessages(error.code);
+      alert(errorMessage);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -60,7 +85,8 @@ const RegisterPage = (props) => {
               minLength: 6,
             }}
           />
-          <Button type="submit" variant="contained">
+          <Button disabled={isLoading} type="submit" variant="contained">
+            { isLoading &&  <CircularProgress color="secondary" size={20} />}
             Register
           </Button>
 
