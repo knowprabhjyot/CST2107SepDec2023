@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
   Paper,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +22,9 @@ const LoginPage = (props) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationSeverity, setOpenNotificationSeverity] = useState("info");
 
   const loginUser = async (event) => {
     event.preventDefault();
@@ -30,23 +35,45 @@ const LoginPage = (props) => {
         loginData.email,
         loginData.password
       );
+
+      setOpenNotificationSeverity("success");
+      setNotificationMessage("Fetching User Profile...");
+      setOpenNotification(true);
+
+
       if (user) {
         setTimeout(() => {
           setIsLoading(false);
-          localStorage.setItem("current-user", JSON.stringify(user));
-          alert("User Succesfully Logged In");
+          localStorage.setItem("current-user", JSON.stringify(user))
+
           navigate("/home");
         }, 2000);
       }
     } catch (error) {
       const errorMessage = getAuthErrorMessages(error.code);
-      alert(errorMessage);
+      setOpenNotificationSeverity("error");
+      setNotificationMessage(errorMessage);
+      setOpenNotification(true);
       setIsLoading(false);
     }
   };
 
+  const handleNotificationClose = () => {
+    setOpenNotification(false);
+  }
+
   return (
-    <Paper style={{ width: 600, textAlign: 'center', margin: 'auto'}} elevation={4}>
+    <Paper
+      style={{ width: 600, textAlign: "center", margin: "auto" }}
+      elevation={4}
+    >
+      <Snackbar
+        open={openNotification}
+        autoHideDuration={6000}
+      >
+        <Alert onClose={handleNotificationClose} severity={notificationSeverity}>{notificationMessage}</Alert>
+      </Snackbar>
+
       <form onSubmit={loginUser}>
         <Typography variant="h4" fontWeight="bold" padding="8px">
           Login Here!
@@ -62,7 +89,7 @@ const LoginPage = (props) => {
             <img width={200} src="/logo.png" alt="" />
           </Box>
           <TextField
-          fullWidth
+            fullWidth
             id="outlined-basic"
             type="email"
             label="Email"

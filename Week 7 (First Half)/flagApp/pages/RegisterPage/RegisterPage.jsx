@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
-import { Box, Button, CircularProgress, Paper, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Paper, Snackbar, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../src/firebaseConfig";
@@ -16,6 +16,9 @@ const RegisterPage = (props) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notificationSeverity, setOpenNotificationSeverity] = useState("info");
 
   const registerUser = async (event) => {
     event.preventDefault();
@@ -26,23 +29,42 @@ const RegisterPage = (props) => {
         registerData.email,
         registerData.password
       );
+
+      setOpenNotificationSeverity("success");
+      setNotificationMessage("Creating User Profile...");
+      setOpenNotification(true);
+
       if (user) {
         setTimeout(() => {
           setIsLoading(false);
-          alert("User Succesfully registered");
           navigate("/");
         }, 2000);
       }
     } catch (error) {
       const errorMessage = getAuthErrorMessages(error.code);
-      alert(errorMessage);
+      setOpenNotificationSeverity("error");
+      setNotificationMessage(errorMessage);
+      setOpenNotification(true);
       setIsLoading(false);
     }
   };
 
+    const handleNotificationClose = () => {
+    setOpenNotification(false);
+  }
+
   return (
     <Paper style={{ width: 600, textAlign: 'center', margin: 'auto'}} elevation={4}>
       <form onSubmit={registerUser}>
+
+      <Snackbar
+        open={openNotification}
+        autoHideDuration={6000}
+      >
+        <Alert onClose={handleNotificationClose} severity={notificationSeverity}>{notificationMessage}</Alert>
+      </Snackbar>
+
+
         <Typography variant="h4" fontWeight="bold" padding="8px">
           Register Here!
         </Typography>
