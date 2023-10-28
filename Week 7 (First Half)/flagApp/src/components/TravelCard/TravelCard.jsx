@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import {
@@ -7,50 +7,67 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  IconButton,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const TravelCard = ({ data, showViewMore, cssConfig }) => {
+const TravelCard = ({ data, showViewMore, cssConfig, addFavorite }) => {
+
   const navigate = useNavigate();
+  const [travelItem, setTravelItem] = useState(data);
+  const [favoriteSelected, setFavoriteSelected] = useState(data.isFavorite);
 
   const navigateToCountry = () => {
     // It should navigate me to the details page
-    navigate(`/detail/${data.name.common}`);
+    navigate(`/detail/${travelItem.name.common}`);
   };
 
+  const addToFavorites = () => {
+    addFavorite(travelItem.name.common);
+    setFavoriteSelected(true);
+  }
+
+ 
   return (
-    <Card style={{
+    <Card
+      style={{
         height: cssConfig.height,
         width: cssConfig.width,
         display: cssConfig.containerFlex.display,
         flexDirection: cssConfig.containerFlex.flexDirection,
         alignItems: cssConfig.containerFlex.alignItems,
-    }}>
-      <CardMedia sx={{ height: cssConfig.imageHeight, width: cssConfig.imageWidth }} image={data.flags.png} />
+      }}
+    >
+      <CardMedia
+        sx={{ height: cssConfig.imageHeight, width: cssConfig.imageWidth }}
+        image={travelItem.flags.png}
+      />
       <CardContent>
         <Typography gutterBottom variant="h4" component="div">
-          {data.name.common}
+          {travelItem.name.common}
         </Typography>
         <Box display="flex" flexDirection="column">
-          <Typography>Population: {data.population}</Typography>
-          <Typography>Region: {data.region}</Typography>
+          <Typography>Population: {travelItem.population}</Typography>
+          <Typography>Region: {travelItem.region}</Typography>
 
-          {
-            !showViewMore && <Box>
-                <Typography>
-                    Area: {data.area}
-                </Typography>
-                </Box>
-          }
-
+          {!showViewMore && (
+            <Box>
+              <Typography>Area: {travelItem.area}</Typography>
+            </Box>
+          )}
         </Box>
       </CardContent>
-      <CardActions>
+      <CardActions style={{ justifyContent: "space-between" }}>
         {
           showViewMore && <Button onClick={navigateToCountry}>View More</Button>
           // showViewMore ? <Button onClick={navigateToCountry}>View More</Button> : null
         }
+
+        <IconButton aria-label="Favorite" onClick={addToFavorites}>
+          <FavoriteIcon color={favoriteSelected ? 'error' : 'primary'} />
+        </IconButton>
       </CardActions>
     </Card>
   );
@@ -59,7 +76,8 @@ const TravelCard = ({ data, showViewMore, cssConfig }) => {
 TravelCard.propTypes = {
   data: PropTypes.any,
   showViewMore: PropTypes.bool,
-  cssConfig: PropTypes.any
+  cssConfig: PropTypes.any,
+  addFavorite: PropTypes.func.isRequired
 };
 
 export default TravelCard;
