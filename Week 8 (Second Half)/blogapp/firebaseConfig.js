@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth';
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -17,5 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth()
 const emailProvider = new EmailAuthProvider();
 const googleProvider = new GoogleAuthProvider();
+const db = getFirestore();
+const storage = getStorage();
 
-export { auth, emailProvider,  googleProvider }
+export { auth, emailProvider,  googleProvider, db, storage }

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../firebaseConfig';
+import { auth, db } from '../../firebaseConfig';
+import { addDoc, collection } from "firebase/firestore";
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState({
     email: "",
+    displayName: "",
     password: "",
     confirmPassword: "",
   });
+  const userReference = collection(db, 'users');
 
   const [showNotification, setShowNotification] = useState(false);
   const [showNotificationMessage, setShowNotificationMessage] = useState("");
@@ -32,6 +35,11 @@ export const SignupPage = () => {
     setShowNotification(false);
     const data = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
     if (data) {
+      // Updating user information
+      await addDoc(userReference, {
+        displayName: formData.displayName,
+        id: data.user.uid
+      });
         alert('Succesfully Registered');
         navigate('/login');
     }
@@ -65,6 +73,27 @@ export const SignupPage = () => {
               className="space-y-4 md:space-y-6"
               onSubmit={handleFormSubmit}
             >
+
+<div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                    Full Name
+                  </label>
+                <input
+                  value={formData.displayName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, displayName: e.target.value })
+                  }
+                  type="text"
+                  name="Display Name"
+                  id="displayName"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Enter your name"
+                  required=""
+                />
+              </div>
               <div>
                 <label
                   htmlFor="email"

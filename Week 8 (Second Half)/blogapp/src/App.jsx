@@ -5,6 +5,7 @@ import { SignupPage } from './pages/SignupPage'
 import { HomPage } from './pages/HomPage'
 import { useEffect, useState } from 'react'
 import { auth } from '../firebaseConfig'
+import { ViewBlogsPage } from './pages/ViewBlogsPage'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log(user, 'user');
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -40,6 +42,10 @@ function App() {
       {
         path: '/home',
         element: <HomPage />
+      },
+      {
+        path: '/blogs',
+        element: <ViewBlogsPage />
       }
     ]
   )
